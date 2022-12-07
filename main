@@ -1,0 +1,95 @@
+import re
+ 
+ 
+def task1_test(regex, value):
+    print(len(re.findall(regex, value)))
+ 
+ 
+def task1():
+    isu = 367231
+    first = [':', ';', 'X', '8', '=', '[']
+    second = ['-', '<', '-{', '<{']
+    third = ['(', ')', 'O', '|', '\\', '/', 'P']
+    face = first[isu % 6] + second[isu % 4] + third[isu % 7]
+    regex = re.sub(r'([.*+?^${}()|[\]\\])', r'\\\1', face)
+    print(f'{face=} {regex=}')
+ 
+    task1_test(regex, "as;<{\\']a-]C]X};<{\\;<{\\(C};<{\\#}WE}R}ZXX")
+    print("correct: 4\n")
+    task1_test(regex, "asfdsf;<{\\df::;f;<{\\((((;<{\\((((")
+    print("correct: 3\n")
+    task1_test(regex, ":asdasfaeghwilegj1378931589091258077(((((((")
+    print("correct: 0\n")
+    task1_test(regex, "!!!!^^^&#$&@#jhgfUGJLSJGD872934y;<{\\")
+    print("correct: 1\n")
+    task1_test(regex, "$@*:-(AGKAHGD(;<{\\;asglsg<{\;<;<{\JDLG\\|;<{\\")
+    print("correct: 3\n")
+ 
+ 
+def task2_test(regex, string):
+    print(re.sub(regex, r'\1', string))
+ 
+ 
+def task2():
+    regex = r'(\w+)(\s+\1\s)+'
+    task2_test(
+        regex,
+        "Довольно распространённая ошибка ошибка – это лишний повтор повтор слова слова. Смешно, не не правда ли? Не нужно портить хор хоровод. ")
+    print(
+        'correct: Довольно распространённая ошибка – это лишний повтор слова. Смешно, не правда ли? Не нужно портить хоровод.')
+    task2_test(regex, 'тест тест тест тест ')
+    print('correct: тест')
+    task2_test(regex, 'askfjasjfk akslfjaskjlf aklsfjaksjlf asfkljjkl ')
+    print('correct: askfjasjfk akslfjaskjlf aklsfjaksjlf asfkljjkl')
+    task2_test(regex, '1 \n 1 \n 1 \n 1 ')
+    print('correct: 1')
+    task2_test(regex, 'many masd masf masd masd aksfl ')
+    print('correct: many masd masf masd aksfl')
+ 
+ 
+def task3_test(regex, string):
+    print("test result: ")
+    list = sorted([i.group(1) for i in re.finditer(regex, string)], key=len)
+    for i in range(len(list)):
+        print(list[i])
+ 
+ 
+def task3():
+    consonants = r'бвгджзйклмнпрстфхцчшщьъ'
+    vowels = r'аоуыэяёюие'
+    regex = rf'(?<!\w)([{consonants}]*([{vowels}])([{consonants}]|\2)*)(?!\w)'
+    task3_test(regex, "Классное слово – обороноспособность, которое должно идти после слов: трава и молоко.")
+    print("correct:\nи\nидти\nслов\nслово\nтрава\nдолжно\nмолоко\nобороноспособность\n\n")
+    task3_test(regex,
+               "С помощью регулярного выражения найти в тексте слова, в которых встречается строго одна гласная буква (встречаться она может несколько раз).")
+    print("correct:\nраз\nтексте\nстрого\n\n")
+    task3_test(regex, "")
+    print("correct:\n\n")
+    task3_test(regex, "апапап аа оао щфыадж ыа а")
+    print("correct:\nа\nаа\nапапап\n\n")
+    task3_test(regex,
+               "Довольно распространённая ошибка ошибка – это лишний повтор повтор слова слова. Смешно, не не правда ли? Не нужно портить хор хоровод.")
+    print("correct:\nне\nне\nли\nхор\nлишний\nповтор\nповтор\nправда\nхоровод\n\n")
+ 
+def task4():
+    regex = r'(\+?)(\d)( ?)((\(\d\d\d\))|(\d\d\d))((-| )?)(\d\d\d)((-| )?)(\d\d)((-| )?)(\d\d)'
+    print(re.fullmatch(regex, "+1(123)1231212"))
+    print(re.fullmatch(regex, "+1(123)123-12-12"))
+    print(re.fullmatch(regex, "+11231231212"))
+    print(re.fullmatch(regex, "+1 123 123 12 12"))
+    print(re.fullmatch(regex, "+1 123-123-12-12"))
+    print(re.fullmatch(regex, "1 123-123-12-12"))
+    print(re.fullmatch(regex, "1 123фыв-123-12-12"))
+    print(re.fullmatch(regex, "+9 123123-12-12"))
+    print(re.fullmatch(regex, "+1234567890123"))
+    print(re.fullmatch(regex, "+37494811880"))
+ 
+ 
+def main():
+    # task1()
+    # task2()
+    # task3()
+    task4()
+ 
+if __name__ == '__main__':
+    main()
